@@ -38,22 +38,11 @@ This is a simple Flask application that demonstrates generating PDFs, storing li
 
 5. **Install Dependencies:**
 
-``
+`pip3 install -r requirements.txt`
 
 6. **Run the Application:**
 
 The application will be accessible at http://127.0.0.1:5000/.
-
-
-**In terminal run :**
-
-curl --location 'localhost:5000/generate_pdf' \
---header 'Content-Type: application/json' \
---data '{
-    "pdf_data":"1234",
-    "user_id":"abcd"
-}'
-
 
 ## Usage: 
 
