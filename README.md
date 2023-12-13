@@ -7,15 +7,15 @@ This is a simple Flask application that demonstrates generating PDFs, storing li
 - [Features](#features)
 - [Installation](#installation)
 - [Usage](#usage)
+- [Endpoints](#endpoints)
 - [Contributing](#contributing)
 - [License](#license)
 
 ## Features
 
-- PDF generation using Flask and Redis.
-- Real-time updates to the front end using Flask-SocketIO.
-- UUID association with each generated PDF link.
-- Store and retrieve PDF links from a Redis queue.
+- Asynchronous PDF generation using RQ.
+- Real-time status check and download functionality.
+- Simple API for submitting PDF generation requests.
 
 ## Installation
 
@@ -44,9 +44,8 @@ This is a simple Flask application that demonstrates generating PDFs, storing li
 
 The application will be accessible at http://127.0.0.1:5000/.
 
-## Usage: 
 
- **In terminal run :**
+**In terminal run :**
 
 curl --location 'localhost:5000/generate_pdf' \
 --header 'Content-Type: application/json' \
@@ -55,7 +54,41 @@ curl --location 'localhost:5000/generate_pdf' \
     "user_id":"abcd"
 }'
 
+
+## Usage: 
+
+1. **Submit PDF Generation Request:**
+
+Use the `/generate_pdf` endpoint to submit a PDF generation request. The endpoint expects a JSON payload with the pdf_data parameter.
+
+Example:
+
+`curl -X POST -H "Content-Type: application/json" -d '{"pdf_data": "PDF Data"}' http://127.0.0.1:5000/generate_pdf`
  
+The response will include a pdf_uuid that can be used to check the status and download the generated PDF.
+
+2. **Check PDF Status:**
+
+Use the /pdf-link/<pdf_uuid> endpoint to check the status of the generated PDF. The status will be either "pending" or "success."
+
+Example:
+
+`curl http://127.0.0.1:5000/pdf-link/PDF_UUID`
+
+3. **Download PDF:**
+
+Use the /download-pdf/<pdf_uuid> endpoint to download the generated PDF once the status is "success."
+
+Example:
+
+`curl -OJ http://127.0.0.1:5000/download-pdf/PDF_UUID`
+
+# Endpoints
+
+- /generate_pdf (POST): Submit a PDF generation request.
+- /pdf-link/<pdf_uuid> (GET): Check the status of the generated PDF.
+- /download-pdf/<pdf_uuid> (GET): Download the generated PDF.
+
 # Running in Production
 
 To run the application in production:
